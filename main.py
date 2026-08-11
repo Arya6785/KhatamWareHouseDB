@@ -5,6 +5,7 @@ from UIL.main_menu import MainMenu
 from UIL.product_information import AddProductFrame
 import arabic_reshaper
 from bidi.algorithm import get_display
+from UIL.product_list_frame import ProductListFrame  # وارد کردن فریم جدول محصولات
 
 def fa(text):
     if not text:
@@ -18,7 +19,7 @@ class App(ctk.CTk):
         super().__init__()
 
         self.title(fa("سیستم مدیریت انبار"))     
-        self.geometry("500x620")
+        self.geometry("1280x720")  # اندازه پنجره
         self.resizable(False, False)
 
         # متغیری برای نگهداری فریم فعلی
@@ -32,7 +33,7 @@ class App(ctk.CTk):
         if self.current_frame is not None:
             self.current_frame.destroy()
             
-        self.current_frame = MainMenu(self, on_add_product=self.show_add_product_frame)
+        self.current_frame = MainMenu(self, on_add_product=self.show_add_product_frame , on_show_products=self.show_product_list_frame)
         self.current_frame.pack(fill="both", expand=True, padx=15, pady=15)
 
     def show_add_product_frame(self):
@@ -42,7 +43,14 @@ class App(ctk.CTk):
             
         self.current_frame = AddProductFrame(self, on_back=self.show_main_menu)
         self.current_frame.pack(fill="both", expand=True, padx=15, pady=15)
+    def show_product_list_frame(self):
+        """نمایش فریم جدول محصولات"""
+        if self.current_frame is not None:
+            self.current_frame.destroy()
 
+        # ساخت فریم جدول لیست کالاها
+        self.current_frame = ProductListFrame(self)
+        self.current_frame.pack(fill="both", expand=True)
 if __name__ == "__main__":
     app = App()
     app.mainloop()

@@ -29,3 +29,10 @@ def far(text: str) -> str:
     
     # اگر تماماً انگلیسی یا عدد بود، بدون تغییر برمی‌گردد
     return text_str
+def fa(text):
+    if not text:
+        return ""
+    return get_display(arabic_reshaper.reshape(text))
+
+
+

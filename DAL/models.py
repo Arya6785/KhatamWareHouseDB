@@ -16,15 +16,15 @@ class Manufacturer(Base):
     products = relationship("Product", back_populates="manufacturer")
 
 
-class Suppliar(Base):
-    __tablename__ = "suppliars"
+class Supplier(Base):
+    __tablename__ = "suppliers"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=True)
     adress = Column(String(200), nullable=True)
     phone = Column(String(20), nullable=True)
 
-    products = relationship("Product", back_populates="suppliar")
+    products = relationship("Product", back_populates="supplier")
 
 
 class Product(Base):
@@ -42,8 +42,8 @@ class Product(Base):
 
 
     manufacturer_id = Column(Integer, ForeignKey("manufacturers.id"), nullable=True)
-    suppliar_id = Column(Integer, ForeignKey("suppliars.id"), nullable=True)
+    supplier_id = Column(Integer, ForeignKey("suppliers.id"), nullable=True)
 
    
     manufacturer = relationship("Manufacturer", back_populates="products")
-    suppliar = relationship("Suppliar", back_populates="products")
+    supplier = relationship("Supplier", back_populates="products")

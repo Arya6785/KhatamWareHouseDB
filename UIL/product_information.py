@@ -1,11 +1,12 @@
 # UIL/add_product_frame.py
 import customtkinter as ctk
 from tkinter import messagebox
-from DAL import SessionLocal, Manufacturer, Suppliar
+from DAL import SessionLocal, Manufacturer, Supplier
 from DAL import Bases
 import arabic_reshaper
 from bidi.algorithm import get_display
 from BLL.persian_check import far
+from UIL.widgets import SearchableComboBox
 def fa(text):
     if not text:
         return ""
@@ -54,6 +55,7 @@ class AddProductFrame(ctk.CTkFrame):
         # واحد فرعی سنجش
         self.sub_unit_label = ctk.CTkLabel(self, text=fa("واحد فرعی:"), font=("Tahoma", 11))
         self.sub_unit_label.pack(anchor="e", padx=55, pady=(4, 0))
+        # بعدا عوض شه که اطلاعات رو مستقیم از دیتا بیس برداره نه از کد
         formated_sub_units = [far(sub_unit) for sub_unit in Bases.SUB_UNITS]
         self.sub_unit_combo = ctk.CTkComboBox(self, values=formated_sub_units, width=320)
         self.sub_unit_combo.pack(pady=4)
@@ -94,7 +96,7 @@ class AddProductFrame(ctk.CTkFrame):
     def get_suppliers(self):
         db = SessionLocal()
         try:
-            formated_suppliers = [far(sup) for sup in Bases.SUPPLIARS]
+            formated_suppliers = [far(sup) for sup in Bases.SUPPLIERS]
             return formated_suppliers
         finally:
             db.close()
