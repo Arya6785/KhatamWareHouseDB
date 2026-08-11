@@ -19,7 +19,7 @@ class App(ctk.CTk):
         super().__init__()
 
         self.title(fa("سیستم مدیریت انبار"))     
-        self.geometry("1280x720")  # اندازه پنجره
+        self.geometry("1280x750")  # اندازه پنجره
         self.resizable(False, False)
 
         # متغیری برای نگهداری فریم فعلی
@@ -48,8 +48,8 @@ class App(ctk.CTk):
         if self.current_frame is not None:
             self.current_frame.destroy()
 
-        # ساخت فریم جدول لیست کالاها
-        self.current_frame = ProductListFrame(self)
+        # پاس دادن متد show_main_menu به پارامتر on_back
+        self.current_frame = ProductListFrame(self, on_back=self.show_main_menu)
         self.current_frame.pack(fill="both", expand=True)
 if __name__ == "__main__":
     app = App()

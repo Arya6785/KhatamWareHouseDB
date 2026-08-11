@@ -35,6 +35,7 @@ class Product(Base):
     name = Column(String(100), nullable=False)
     unit = Column(String(20), nullable=True)
     sub_unit = Column(String(20), nullable=True)
+    branch = Column(String(50), nullable=True)
     quantity = Column(Integer, default=0)
     purchase_point = Column(Integer, nullable=True)
     usage_per_month = Column(Integer, nullable=True)

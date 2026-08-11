@@ -8,8 +8,9 @@ from BLL.persian_check import fa
 
 
 class ProductListFrame(ctk.CTkFrame):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master, on_back=None, **kwargs):
         super().__init__(master, **kwargs)
+        self.on_back = on_back
 
         # ۱. تعریف تمام ستون‌ها و معادل فارسی آن‌ها (متن خام فارسی برای HTML)
         self.columns_info_raw = {
@@ -62,7 +63,18 @@ class ProductListFrame(ctk.CTkFrame):
         # --- ۲. هدر بالا (عنوان + دکمه پرینت) ---
         self.header_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.header_frame.pack(fill="x", padx=20, pady=(15, 5))
-
+        if self.on_back:
+            self.back_btn = ctk.CTkButton(
+                self.header_frame,
+                text=fa(" بازگشت به منوی اصلی"),
+                fg_color="#a83232",
+                hover_color="#7a2323",
+                font=("Tahoma", 12, "bold"),
+                width=110,
+                height=38,
+                command=self.on_back
+            )
+            self.back_btn.pack(side="right", padx=(0, 15))
         self.title_label = ctk.CTkLabel(
             self.header_frame,
             text=fa("مدیریت و مشاهده کالاها"),
@@ -151,8 +163,10 @@ class ProductListFrame(ctk.CTkFrame):
         self.scrollbar_y.pack(side="left", fill="y")
         self.scrollbar_x.pack(side="bottom", fill="x")
         self.tree.pack(side="right", fill="both", expand=True)
+       
 
         self.load_data()
+
 
     def _setup_treeview_style(self):
         """تنظیمات ظاهری: افزایش سایز فونت و ارتفاع سطرها برای خوانایی بهتر"""
@@ -165,14 +179,14 @@ class ProductListFrame(ctk.CTkFrame):
             foreground="#ffffff",
             fieldbackground="#2b2b2b",
             rowheight=40,            # افزایش ارتفاع سطرها
-            font=("Tahoma", 13)       # فونت درشت‌تر برای محتوای جدول
+            font=("Tahoma", 15)       # فونت درشت‌تر برای محتوای جدول
         )
 
         style.configure(
             "Treeview.Heading",
             background="#1a1a1a",
             foreground="#3B8ED0",
-            font=("Tahoma", 13, "bold"),  # فونت درشت‌تر برای عناوین
+            font=("Tahoma", 15, "bold"),  # فونت درشت‌تر برای عناوین
             relief="flat"
         )
 
@@ -222,7 +236,7 @@ class ProductListFrame(ctk.CTkFrame):
             for idx, p in enumerate(products):
                 mfg_name = p.manufacturer.name if getattr(p, 'manufacturer', None) else "-"
                 sup_name = p.supplier.name if getattr(p, 'supplier', None) else "-"
-                branch_name = getattr(p, 'branch', None) or "-"
+                branch_name = p.branch if getattr(p, 'branch', None) else "-"
 
                 # ۱. ذخیره داده‌های خام برای HTML (بدون تبدیل با fa)
                 raw_item = {
