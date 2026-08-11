@@ -8,7 +8,7 @@ class Manufacturer(Base):
     __tablename__ = "manufacturers"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(100), nullable=False)
+    name = Column(String(100), nullable=True)
     phone = Column(String(20))
     adress = Column(String(200), nullable=True)
 
@@ -20,7 +20,7 @@ class Suppliar(Base):
     __tablename__ = "suppliars"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(100), nullable=False)
+    name = Column(String(100), nullable=True)
     adress = Column(String(200), nullable=True)
     phone = Column(String(20), nullable=True)
 

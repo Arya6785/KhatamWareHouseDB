@@ -5,7 +5,7 @@ from DAL import SessionLocal, Manufacturer, Suppliar
 from DAL import Bases
 import arabic_reshaper
 from bidi.algorithm import get_display
-
+from BLL.persian_check import far
 def fa(text):
     if not text:
         return ""
@@ -46,13 +46,16 @@ class AddProductFrame(ctk.CTkFrame):
         # واحد اصلی سنجش
         self.unit_label = ctk.CTkLabel(self, text=fa("واحد اصلی:"), font=("Tahoma", 11))
         self.unit_label.pack(anchor="e", padx=55, pady=(4, 0))
-        self.unit_combo = ctk.CTkComboBox(self, values=Bases.UNITS, width=320)
+        # persian check and reshaping for units
+        formated_units = [far(unit) for unit in Bases.UNITS]
+        self.unit_combo = ctk.CTkComboBox(self, values=formated_units, width=320)
         self.unit_combo.pack(pady=4)
 
         # واحد فرعی سنجش
         self.sub_unit_label = ctk.CTkLabel(self, text=fa("واحد فرعی:"), font=("Tahoma", 11))
         self.sub_unit_label.pack(anchor="e", padx=55, pady=(4, 0))
-        self.sub_unit_combo = ctk.CTkComboBox(self, values=Bases.SUB_UNITS, width=320)
+        formated_sub_units = [far(sub_unit) for sub_unit in Bases.SUB_UNITS]
+        self.sub_unit_combo = ctk.CTkComboBox(self, values=formated_sub_units, width=320)
         self.sub_unit_combo.pack(pady=4)
 
 
@@ -60,7 +63,7 @@ class AddProductFrame(ctk.CTkFrame):
         # دکمه ثبت
         self.save_button = ctk.CTkButton(
             self, 
-            text="ذخیره کالا", 
+            text=fa("ذخیره کالا"), 
             fg_color="green", 
             hover_color="darkgreen",
             width=320,
@@ -83,14 +86,16 @@ class AddProductFrame(ctk.CTkFrame):
     def get_manufacturers(self):
         db = SessionLocal()
         try:
-            return Bases.MANUFACTURERS
+            formated_manufacturers = [far(mfg) for mfg in Bases.MANUFACTURERS]
+            return formated_manufacturers
         finally:
             db.close()
 
     def get_suppliers(self):
         db = SessionLocal()
         try:
-            return Bases.SUPPLIARS  # اصلاح نام متغیر به SUPPLIARS
+            formated_suppliers = [far(sup) for sup in Bases.SUPPLIARS]
+            return formated_suppliers
         finally:
             db.close()
 
