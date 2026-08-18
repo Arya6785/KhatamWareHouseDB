@@ -1,6 +1,7 @@
 # main.py
 import customtkinter as ctk
 from DAL import init_db
+from UIL.base_info_frame import BaseInfoFrame
 from UIL.main_menu import MainMenu
 from UIL.product_information import AddProductFrame
 import arabic_reshaper
@@ -32,8 +33,7 @@ class App(ctk.CTk):
         """نمایش منوی اصلی"""
         if self.current_frame is not None:
             self.current_frame.destroy()
-            
-        self.current_frame = MainMenu(self, on_add_product=self.show_add_product_frame , on_show_products=self.show_product_list_frame)
+        self.current_frame = MainMenu(self, on_open_base_info=self.show_base_info_frame, on_show_products=self.show_product_list_frame)
         self.current_frame.pack(fill="both", expand=True, padx=15, pady=15)
 
     def show_add_product_frame(self):
@@ -50,6 +50,13 @@ class App(ctk.CTk):
 
         # پاس دادن متد show_main_menu به پارامتر on_back
         self.current_frame = ProductListFrame(self, on_back=self.show_main_menu)
+        self.current_frame.pack(fill="both", expand=True)
+    # متد نمایش فریم اطلاعات پایه:
+    def show_base_info_frame(self):
+        if self.current_frame is not None:
+            self.current_frame.destroy()
+
+        self.current_frame = BaseInfoFrame(self, on_back=self.show_main_menu)
         self.current_frame.pack(fill="both", expand=True)
 if __name__ == "__main__":
     app = App()

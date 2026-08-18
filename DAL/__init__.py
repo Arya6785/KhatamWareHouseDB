@@ -1,6 +1,6 @@
 # DAL/__init__.py
 from .connection import engine, SessionLocal, Base
-from .models import Product, Manufacturer, Supplier
+from .models import Product, Manufacturer, Supplier , Unit, Branch
 from DAL import Bases
 def init_db():
     # ساخت جداول در صورت عدم وجود
@@ -18,7 +18,16 @@ def init_db():
         if db.query(Supplier).count() == 0:
             for name in Bases.SUPPLIERS:
                 db.add(Supplier(name=name))
-                
+        
         db.commit()
+        if db.query(Unit).count() == 0:
+            for name in Bases.UNITS:
+                db.add(Unit(name=name))
+        db.commit()
+        if db.query(Branch).count() == 0:
+            for name in Bases.BRANCHES:
+                db.add(Branch(name=name))
+        db.commit()
+
     finally:
         db.close()
